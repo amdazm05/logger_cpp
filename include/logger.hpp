@@ -9,48 +9,33 @@ namespace LOGGER
 {
     typedef uint8_t         LOG_LEVEL;
     typedef std::fstream    LOGGING_FILE;
-    typedef std::string     LOGGER_COLOR;
-    enum class log_levels
+    typedef uint8_t    LOGGER_COLOR;
+    enum log_levels
     {
-        DEBUG = 0x00,
+        DEBUG = 0x02,
         INFO = 0x01,
-        TRACE = 0x02,
-        WARNING = 0x03,
-        ERROR = 0x11
-    };
-    enum class log_colors
+        TRACE = 0x03,
+        WARNING = 0x04,
+        ERROR = 0x00
+    } ;
+    enum  log_colors
     {
-        ERROR_COLOR=31,
-        LOG_COLOR=32,
-        DEBUG_COLOR=35,
-        WARNING_COLOR=33,
-        TRACE_COLOR=36,
-    };
-    enum class logger_output
-    {
-        FILE=0,
-        CONSOLE=1
-    };
+        ERROR_COLOR=1,
+        LOG_COLOR=2,
+        DEBUG_COLOR=3,
+        WARNING_COLOR=4
+    } ;
 
-    template <class type>
     class Logger
     {
     private:
         static LOGGING_FILE     *file;
-        struct loglevelprofile
-        {   
-            public:
-                static LOGGER_COLOR *   colorcode;
-                static LOG_LEVEL        level;
-        };
-        static std::mutex  mtx;
-         
-    public:
-        static void         SET_THREAD_SAFETY_LOCK(bool condition);
+        static std::mutex   mtx;
         static void         SET_LEVEL(uint8_t level);
-        static void         SET_LOG_PREGERENCE(uint8_t preference);
-        static void         SET_LOG_PREGERENCE(uint8_t preference,std::string filename);
-        static void         LOG(LOG_LEVEL level);
+    public:
+        static void         SET_THREAD_SAFETY_LOCK(bool condition);    
+        // template<typename   ... Args>
+        static void         LOG(LOG_LEVEL level,char * message,int args);
     };
 }
 
