@@ -35,7 +35,7 @@ namespace LOGGER
     public:
         static void         SET_THREAD_SAFETY_LOCK(bool condition);    
         // template<typename   ... Args>
-        static void         LOG(LOG_LEVEL level,char * message,int args);
+        static void         LOG(LOG_LEVEL level,char * message,...);
     };
 }
 
