@@ -30,12 +30,10 @@ namespace LOGGER
     {
     private:
         static LOGGING_FILE     *file;
-        static std::mutex   mtx;
         static void         SET_LEVEL(uint8_t level);
     public:
         static void         SET_THREAD_SAFETY_LOCK(bool condition);    
-        // template<typename   ... Args>
-        static void         LOG(LOG_LEVEL level,char * message,...);
+        static void         LOG(LOG_LEVEL level,const char * message,...);
     };
 }
 
