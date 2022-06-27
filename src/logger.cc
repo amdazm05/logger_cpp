@@ -33,14 +33,28 @@ void  LOGGER::Logger::LOG(LOGGER::LOG_LEVEL level,const char * message, ...)
     if(thread_safetylock)
     {
         std::lock_guard<std::mutex> lock(mtx);
+        va_list    args;
+        va_start(args,message);
+        printf(colors_strings[level]);
+        printf("LOG[%s]:" ,logger_level_strings[level]);
+        vfprintf(stdout, message, args);
+        printf(colors_strings[4]);
+        printf("\n");
+        va_end(args);
+        return ;
+    }
+    
+    else
+    {
+        va_list    args;
+        va_start(args,message);
+        printf(colors_strings[level]);
+        printf("LOG[%s]:" ,logger_level_strings[level]);
+        vfprintf(stdout, message, args);
+        printf(colors_strings[4]);
+        printf("\n");
+        va_end(args);
+        return ;
     }
         
-    va_list    args;
-    va_start(args,message);
-    printf(colors_strings[level]);
-    printf("LOG[%s]:" ,logger_level_strings[level]);
-    vfprintf(stdout, message, args);
-    printf(colors_strings[4]);
-    printf("\n");
-    va_end(args);
 }
