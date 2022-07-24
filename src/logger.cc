@@ -1,7 +1,7 @@
 #include <logger.hpp>
 #include <stdarg.h>
 
-LOGGING_FILE *Logger::file;
+LOGGING_FILE *Logger::file=NULL;
 bool Logger::thread_safetylock=false;
 std::mutex Logger::mtx;
 
@@ -18,7 +18,7 @@ void  Logger::LOG(LOG_LEVEL level,const char * message, ...)
     fprintf (file,colors_strings[level]);
     fprintf (file,"LOG[%s]:" ,logger_level_strings[level]);
     vfprintf(file, message,args) ;
-    fprintf (file,colors_strings[4]);
+    fprintf (file,colors_strings[5]);
     va_end(args);
     return ;
 }
