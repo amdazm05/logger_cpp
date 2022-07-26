@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 set(BENCHMARK_ENABLE_TESTING NO)
-
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 include(FetchContent)
 
 FetchContent_Declare(
