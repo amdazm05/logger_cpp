@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <mutex>
-
+#define TRACE __LINE__ , __FILE__
 typedef uint8_t    LOG_LEVEL;
 typedef FILE       LOGGING_STREAM;
 typedef uint8_t    LOGGER_COLOR;
@@ -12,18 +12,18 @@ enum    log_levels
 {
     DEBUG =     0x02,
     INFO =      0x01,
-    TRACE =     0x03,
-    WARNING =   0x04,
+    TRACING =   0x04,
+    WARNING =   0x03,
     ERROR =     0x00
 } ;
 
-constexpr char *colors_strings[] =
+constexpr char const *colors_strings[] =
     {
             "\n \x1b[31m LOG[ERROR]:\t",     // COLOR_RED
             "\n \x1b[32m LOG[INFO]:\t",     // COLOR_GREEN
             "\n \x1b[35m LOG[DEBUG]:\t",     // COLOR_MAGENTA
             "\n \x1b[33m LOG[WARN]:\t",     // COLOR_YELLOW
-            "\n \x1b[36m LOG[TRACE]:\t",     // COLOR_CYAN
+            "\n \x1b[36m LOG[TRACE]:File(%s)-Line(%d)\t",     // COLOR_CYAN
             "\n \x1b[0m \n",   // COLOR_RESET
     };
 
@@ -31,6 +31,7 @@ class Logger
 {
 public:
     static void         LOG(LOG_LEVEL level,const char * message,...);
+    static void         LOG(int level,const char *path,const char * message,...);
     static void         setFileName(const char * filename);
     static void         SET_THREAD_SAFETY_LOCK(bool condition);    
 private:

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
-project(main)
+project(logger)
+option(TESTS "TESTING IS DISABLED" OFF)
 add_library(
     LOGGER
         STATIC
@@ -12,6 +13,9 @@ target_include_directories(
     ${PROJECT_SOURCE_DIR}/include/
 )
 
+if(TESTS)
 add_subdirectory(test)
+endif(TESTS)
+
 # Make this as an install library
 
