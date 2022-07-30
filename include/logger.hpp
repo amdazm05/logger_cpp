@@ -2,39 +2,46 @@
 #define __logger
 
 #include <stdint.h>
-#include <fstream>
 #include <string.h>
 #include <mutex>
-namespace LOGGER
+#define TRACE __LINE__ , __FILE__
+typedef uint8_t    LOG_LEVEL;
+typedef FILE       LOGGING_STREAM;
+typedef uint8_t    LOGGER_COLOR;
+enum    log_levels
 {
-    typedef uint8_t         LOG_LEVEL;
-    typedef std::fstream    LOGGING_FILE;
-    typedef uint8_t    LOGGER_COLOR;
-    enum log_levels
-    {
-        DEBUG = 0x02,
-        INFO = 0x01,
-        TRACE = 0x03,
-        WARNING = 0x04,
-        ERROR = 0x00
-    } ;
-    enum  log_colors
-    {
-        ERROR_COLOR=1,
-        LOG_COLOR=2,
-        DEBUG_COLOR=3,
-        WARNING_COLOR=4
-    } ;
+    DEBUG =     0x02,
+    INFO =      0x01,
+    TRACING =   0x04,
+    WARNING =   0x03,
+    ERROR =     0x00
+} ;
 
-    class Logger
+constexpr char const *colors_strings[] =
     {
-    private:
-        static LOGGING_FILE     *file;
-        static void         SET_LEVEL(uint8_t level);
-    public:
-        static void         SET_THREAD_SAFETY_LOCK(bool condition);    
-        static void         LOG(LOG_LEVEL level,const char * message,...);
+            "\n \x1b[31m LOG[ERROR]:\t",     // COLOR_RED
+            "\n \x1b[32m LOG[INFO]:\t",     // COLOR_GREEN
+            "\n \x1b[35m LOG[DEBUG]:\t",     // COLOR_MAGENTA
+            "\n \x1b[33m LOG[WARN]:\t",     // COLOR_YELLOW
+            "\n \x1b[36m LOG[TRACE]:File(%s)-Line(%d)\t",     // COLOR_CYAN
+            "\n \x1b[0m \n",   // COLOR_RESET
     };
-}
+
+class Logger
+{
+public:
+    static void         LOG(LOG_LEVEL level,const char * message,...);
+    static void         LOG(int level,const char *path,const char * message,...);
+    static void         setFileName(const char * filename);
+    static void         SET_THREAD_SAFETY_LOCK(bool condition);    
+private:
+    
+    static LOGGING_STREAM *file;
+    static void         SET_LEVEL(uint8_t level);
+    static bool thread_safetylock;
+    static std::mutex mtx;
+    static int written_characters;
+};
+
 
 #endif //__logger
