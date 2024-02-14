@@ -1,0 +1,4 @@
+#ifndef _LOGMESSAGE_BUFFER
+#define _LOGMESSAGE_BUFFER
+
+#endif
