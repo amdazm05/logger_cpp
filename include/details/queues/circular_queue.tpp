@@ -3,13 +3,17 @@
 
 #include <iostream>
 #include <source_location>
+#include <vector>
+#include <cassert>
 
-namespace timberline
+namespace timber_line_datastructs
 {
     template <typename T>
     class circular_queue
     {
-        using size_c_t = typename std::vector<T>::size_type private : std::size_t q_size_;
+        using size_c_t = typename std::vector<T>::size_type;
+    private : 
+        std::size_t q_size_;
         size_c_t head_;
         size_c_t tail_;
         std::vector<T> storage_;
@@ -32,8 +36,17 @@ namespace timberline
             if (q_size_ > 0)
             {
                 storage_[tail_] = std::move(item);
-                tail_ = (tail_ + 1) % q_size_1;
-                head_ = tail_ == head_ ? ((head_ + 1) % q_size_) : head;
+                tail_ = (tail_ + 1) % q_size_;
+                head_ = tail_ == head_ ? ((head_ + 1) % q_size_) : head_;
+            }
+        }
+        void push_back(T item)
+        {
+            if (q_size_ > 0)
+            {
+                storage_[tail_] = item;
+                tail_ = (tail_ + 1) % q_size_;
+                head_ = tail_ == head_ ? ((head_ + 1) % q_size_) : head_;
             }
         }
         void pop_front()
@@ -45,10 +58,10 @@ namespace timberline
         {
             return storage_[head_];
         }
-        explicit const T &at(size_c_t i) const
+        const T &at(size_c_t i) const
         {
             // Logically impossible
-            assert(i > q_size_, "tiberline_queue : invalid index input");
+            assert(i < q_size_);
             return storage_[(head_ + i) % q_size_];
         }
         bool is_empty() const
@@ -58,7 +71,11 @@ namespace timberline
 
         bool is_full() const
         {
-            return q_size_ == 0 ? false : (tail_ + 1) % q_size_ == head_;
+            return tail_ == head_ ? false : (tail_ + 1) % q_size_ == head_;
+        }
+        inline std::size_t size() const
+        {
+            return q_size_;
         }
 
     private:
@@ -67,7 +84,7 @@ namespace timberline
             q_size_ = other.q_size_;
             head_ = other.head_;
             tail_ = other.tail_;
-            v_ = std::move(other.storage);
+            storage_ = std::move(other.storage_);
 
             other.max_items_ = 0;
             other.head_ = other.tail_ = 0;
