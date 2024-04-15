@@ -26,14 +26,14 @@ namespace timber_line_datastructs
             void push(T && item)
             {
                 std::unique_lock<std::mutex> ulock(queue_mutex_);
-                place_cv_.wait(lock,[this](){return !this->circular_q_.full();});
+                place_cv_.wait(ulock,[this](){return !this->circular_q_.full();});
                 circular_q_.push_back(std::move(item));
-                place_cv.notify_one();
+                place_cv_.notify_one();
             }
-            bool pop(T&&popedItem)
+            void pop(T&&popedItem)
             {
                 std::unique_lock<std::mutex> ulock(queue_mutex_);
-                remove_cv_.wait(lock,[this](){return !this->circular_q_.empty();});
+                remove_cv_.wait(ulock,[this](){return !this->circular_q_.empty();});
                 popedItem = std::move(circular_q_.top());
                 circular_q_.pop_front();
                 remove_cv_.notify_one();
