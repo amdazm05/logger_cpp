@@ -73,9 +73,10 @@ namespace timber_line_datastructs
         {
             return tail_ == head_ ? false : (tail_ + 1) % q_size_ == head_;
         }
-        inline std::size_t size() const
+        std::size_t size() const
         {
-            return q_size_;
+            if(tail_>=head_) return tail_-head_;
+            else return q_size_ - (head_ -tail_);
         }
 
     private:
