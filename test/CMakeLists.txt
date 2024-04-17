@@ -1,0 +1,7 @@
+foreach(TEST_SOURCE ${TEST_PATHS})
+  cmake_path(GET TEST_SOURCE STEM TEST_NAME)
+  set_source_files_properties(${TEST_SOURCE} PROPERTIES LANGUAGES CXX)
+  add_executable(${TEST_NAME} ${TEST_SOURCE})
+  target_compile_features(${TEST_NAME} PUBLIC cxx_std_20 )
+  target_link_libraries(${TEST_NAME} PRIVATE pthread)
+endforeach()
